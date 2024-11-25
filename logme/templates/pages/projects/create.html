@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container">
+    <div class="mx-24 p-4 pt-12 border-2 border-gray-200 rounded-lg dark:bg-slate-800">
+      <h2>Create New Project</h2>
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_div }}
+        <div class="flex justify-center">
+          <button type="submit" class="btn-primary my-2">Create Project</button>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock content %}

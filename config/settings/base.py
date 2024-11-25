@@ -1,7 +1,6 @@
 # ruff: noqa: ERA001, E501
 """Base settings to build other settings files upon."""
 
-
 from pathlib import Path
 
 import environ
@@ -89,6 +88,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "logme.users",
     # Your stuff: custom apps go here
+    "logme.track",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

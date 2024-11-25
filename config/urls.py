@@ -19,6 +19,7 @@ urlpatterns = [
     # User management
     path("users/", include("logme.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
+    path("projects/", include("logme.track.urls")),
     # Your stuff: custom urls includes go here
     # ...
     # Media files
