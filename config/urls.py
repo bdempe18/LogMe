@@ -8,7 +8,7 @@ from django.views import defaults as default_views
 from django.views.generic import TemplateView
 
 urlpatterns = [
-    path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
+    path("home/", include("logme.core.urls"), name="home"),
     path(
         "about/",
         TemplateView.as_view(template_name="pages/about.html"),
@@ -19,7 +19,7 @@ urlpatterns = [
     # User management
     path("users/", include("logme.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
-    path("projects/", include("logme.track.urls")),
+    path("projects/", include("logme.track.urls", namespace="projects")),
     # Your stuff: custom urls includes go here
     # ...
     # Media files
@@ -57,3 +57,7 @@ if settings.DEBUG:
         urlpatterns += [
             path("__reload__/", include("django_browser_reload.urls")),
         ]
+
+urlpatterns += [
+    path("", include("logme.core.urls"), name="home"),
+]

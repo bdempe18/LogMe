@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.db import models
+from django.urls import reverse
 from django_extensions.db.fields import AutoSlugField
 from django_extensions.db.models import TimeStampedModel
 from django_extensions.db.models import TitleSlugDescriptionModel
@@ -7,9 +9,9 @@ from .fields import HexColorField
 
 
 class LogLevel(models.Model):
+    # Fields
     title = models.CharField(max_length=50)
     slug = AutoSlugField(populate_from=["title"])
-
     color_hex = HexColorField(default="COCOCO")
 
     def __str__(self):
@@ -17,31 +19,77 @@ class LogLevel(models.Model):
 
 
 class Project(TitleSlugDescriptionModel, TimeStampedModel, models.Model):
+    # Constants
     log_choices = [
         ("LARAVEL", "Laravel"),
     ]
 
+    # Fields
     last_synced_at = models.DateTimeField(null=True)
     log_type = models.CharField(choices=log_choices, default=log_choices[0])
     sync_command = models.TextField(blank=True)
-
     levels = models.ManyToManyField(LogLevel, related_name="projects")
 
     def __str__(self):
         return f"{self.title}"
 
+    def get_absolute_url(self):
+        return reverse("projects:detail", kwargs={"slug": self.slug})
+
+    @property
+    def management_command(self) -> str:
+        project_root = settings.BASE_DIR
+        return f"cd {project_root} && poetry run python manage.py sync {self.slug}"
+
+    @property
+    def copy_command(self) -> str:
+        local_dir = self._local_dir()
+        command = self.sync_command.replace("{here}", local_dir + "/")
+
+        commands = [
+            "mkdir -p " + local_dir,
+            "find " + local_dir + " -mindepth 1 -delete",
+            command,
+            self.management_command,
+        ]
+
+        return " && ".join(commands)
+
+    def upload_directory(self) -> str:
+        return settings.MEDIA_ROOT + "/" + self.slug
+
 
 class LogEntry(TimeStampedModel, models.Model):
-    label = models.CharField(max_length=100, default="New Log")
+    # Fields
+    title = models.CharField(max_length=100, blank=True, default="")
+    summary = models.TextField(blank=True)
+    timestamp = models.DateTimeField()
+    trace = models.TextField(blank=True)
+    level = models.ForeignKey(
+        LogLevel,
+        on_delete=models.CASCADE,
+        related_name="entries",
+    )
     project = models.ForeignKey(
         Project,
         on_delete=models.CASCADE,
         related_name="entries",
     )
-    content = models.TextField()
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["summary", "timestamp"],
+                name="unique_summary_timestamp",
+            ),
+        ]
 
     def __str__(self):
         if self.label:
             return f"{self.label}"
-
         return "Log #" + self.id
+
+    # Properties
+    @property
+    def label(self) -> str:
+        return self.title or self.summary

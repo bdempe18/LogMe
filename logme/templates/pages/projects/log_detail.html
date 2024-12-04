@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="grid grid-cols-3 items-center">
+    <div class="col-start-2">
+      <h1 class="text-center">
+        {% if object.title %}
+          {{ object.title }}
+        {% else %}
+          Log {{ object.id }}
+        {% endif %}
+        Summary
+      </h1>
+    </div>
+    <div class="col-start-3 flex justify-end">
+      <a href="{% url 'projects:detail' object.project.slug %}"
+         class="text-sm text-white">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             fill="none"
+             viewBox="0 0 24 24"
+             stroke-width="1.5"
+             stroke="currentColor"
+             class="inline-block size-4">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+        </svg>
+        Back to Project
+      </a>
+    </div>
+  </div>
+  <div class="p-2 m-2">
+    <code class="text-base text-green-600">{{ object.summary }}</code>
+  </div>
+  {% for line in trace %}
+    {% if line != "" %}
+      <div class="border-b border-gray-200 text-sm text-white hover:bg-slate-700 {% if supressing_keywords in line %}brightness-50{% endif %}">
+        <span class="text-white">{{ forloop.counter }}.</span> <code>{{ line }}</code>
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endblock content %}

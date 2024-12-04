@@ -2,8 +2,8 @@
 
 {% block content %}
   <div class="container">
-    <div class="mx-24 p-4 pt-12 border-2 border-gray-200 rounded-lg dark:bg-slate-800">
-      <h2>Create New Project</h2>
+    <div class="mx-24 p-4 pt-12 rounded-lg dark:bg-slate-800">
+      <h2 class="text-center">Create New Project</h2>
       <form method="post">
         {% csrf_token %}
         {{ form.as_div }}

@@ -11,8 +11,9 @@ def create_default_log_levels(apps, schema_editor):
         {'title': 'INFO', 'color_hex': '#2563EB'},
         {'title': 'WARNING', 'color_hex': '#F59E0B'},
         {'title': 'ERROR', 'color_hex': '#DC2626'},
+        {'title': 'EMERGENCY', 'color_hex': '#FF0000'},
     ]
-    
+
     for level in default_levels:
         LogLevel.objects.create(**level)
 
