@@ -1,4 +1,12 @@
 {
+  "name": "Logme",
+  "private": false,
+  "type": "module",
+  "scripts": {
+    "start": "npm run dev",
+    "dev": "npx tailwindcss -i ./css/input.css -o ./css/styles.css --watch",
+    "build": "npx tailwindcss -i ./css/input.css -o ./css/styles.css"
+  },
   "devDependencies": {
     "tailwindcss": "^3.4.15"
   },
