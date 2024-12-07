@@ -14,13 +14,13 @@ from .models import Project
 class ProjectCreateView(CreateView):
     model = Project
     form_class = ProjectForm
-    template_name = "pages/projects/create.html"
+    template_name = "projects/create.html"
     success_url = reverse_lazy("home")
 
 
 class ProjectLogs(ListView):
     model = LogEntry
-    template_name = "pages/projects/list.html"
+    template_name = "projects/list.html"
     context_object_name = "entries"
     paginate_by = 25
 
@@ -33,7 +33,7 @@ class ProjectLogs(ListView):
 
 class LogDetailView(DetailView):
     model = LogEntry
-    template_name = "pages/projects/log_detail.html"
+    template_name = "projects/log_detail.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
