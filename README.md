@@ -1,48 +1,56 @@
 # LogMe
 
-Locally store and analyze production logs
+LogMe is a log management tool designed to be run locally and aid in presentation, analysis, and
+management of server logs. It currently supports Laravel logs with the intention to quickly add
+support for Django logs.
 
-[![Built with Cookiecutter Django](https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg?logo=cookiecutter)](https://github.com/cookiecutter/cookiecutter-django/)
-[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+## Dependencies
+You need a current version of Python (3.11 or newer) as well as a
+[Poetry](https://python-poetry.org/). If you don't have Poetry, I recommend using Pipx to install
+it.
 
-## Settings
+## Installation
 
-Moved to [settings](https://cookiecutter-django.readthedocs.io/en/latest/1-getting-started/settings.html).
+#### Project Dependencies
+After cloning the repository, navigate to the project root and install the additional dependencies.
+Poetry will install and resolve all project dependencies.
 
-## Basic Commands
+```console
+poetry install
+```
 
-### Setting Up Your Users
+#### Database
+LogMe uses a postgres database to locally store logs. There are many ways to configure the local
+database, but the following assumes that you have Postgres running globally.
 
-- To create a **normal user account**, just go to Sign Up and fill out the form. Once you submit it, you'll see a "Verify Your E-mail Address" page. Go to your console to see a simulated email verification message. Copy the link into your browser. Now the user's email should be verified and ready to go.
+```console
+sudo -u postgres psql
 
-- To create a **superuser account**, use this command:
+CREATE DATABASE logme;
+CREATE USER djangouser with PASSWORD 'django';
+GRANT ALL PRIVILEGES ON DATABASE logme to djangouser;
+ALTER ROLE djangouser SET client_encoding to 'utf8';
+ALTER ROLE djangouser SET default_transaction_isolation to 'read committed';
+ALTER ROLE djangouser SET timezone TO 'UTC';
+\q
+echo "DATABASE_URL=postgres://djangouser/django@127.0.0.1/logme" >> .env
+```
 
-      $ python manage.py createsuperuser
+You can (and should) alter the username and password to fit your local configuration.
 
-For convenience, you can keep your normal user logged in on Chrome and your superuser logged in on Firefox (or similar), so that you can see how the site behaves for both kinds of users.
+### Asserts
+Navigation to the project static directory and build.
 
-### Type checks
+```console
+cd logme/static
+npm install
+npm run build
+```
 
-Running type checks with mypy:
+### Launch the Localserver
+Navigate back to the project root, drop into the poetry shell, and you are good to go!
 
-    $ mypy logme
-
-### Test coverage
-
-To run the tests, check your test coverage, and generate an HTML coverage report:
-
-    $ coverage run -m pytest
-    $ coverage html
-    $ open htmlcov/index.html
-
-#### Running tests with pytest
-
-    $ pytest
-
-### Live reloading and Sass CSS compilation
-
-Moved to [Live reloading and SASS compilation](https://cookiecutter-django.readthedocs.io/en/latest/2-local-development/developing-locally.html#using-webpack-or-gulp).
-
-## Deployment
-
-The following details how to deploy this application.
+```console
+poetry shell
+./manage.py runserver_plus
+```
