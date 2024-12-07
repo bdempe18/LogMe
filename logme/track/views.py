@@ -47,4 +47,4 @@ def log_entry_delete(request, pk):
     entry = get_object_or_404(LogEntry, pk=pk)
     entry.delete()
 
-    return HttpResponse(status=200)
+    return HttpResponse(status=204)

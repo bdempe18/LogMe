@@ -43,5 +43,5 @@ def first_line(request):
     ],
 )
 @pytest.mark.skip
-def test_parse_first_line():
+def test_parse_first_line(expected_summary, expected_trace):
     pass
