@@ -6,14 +6,15 @@ from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView
 
+from .forms import ProjectForm
 from .models import LogEntry
 from .models import Project
 
 
 class ProjectCreateView(CreateView):
     model = Project
+    form_class = ProjectForm
     template_name = "pages/projects/create.html"
-    fields = ["title", "description", "log_type", "sync_command", "levels"]
     success_url = reverse_lazy("home")
 
 

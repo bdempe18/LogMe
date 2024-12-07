@@ -26,12 +26,26 @@ class Project(TitleSlugDescriptionModel, TimeStampedModel, models.Model):
 
     # Fields
     last_synced_at = models.DateTimeField(null=True)
-    log_type = models.CharField(choices=log_choices, default=log_choices[0])
-    sync_command = models.TextField(blank=True)
+    framework = models.CharField(choices=log_choices, default=log_choices[0])
+    sync_command = models.TextField(
+        blank=True,
+        help_text="""
+            Command to copy log file from its home location to this project.
+            Use `{here}` for the destination. The `cp` command is a good
+            choice for local projects and `scp` for remote projects.,
+        """,
+    )
     levels = models.ManyToManyField(LogLevel, related_name="projects")
 
     # regex patterns to read the first line
-    pattern = models.CharField(max_length=255)
+    pattern = models.CharField(
+        max_length=255,
+        help_text="""
+            Regex pattern needed to parse the first line of a log into the date,
+            level, summary, and initial trace. The framework default will be
+            used if no custom pattern is provided
+        """,
+    )
 
     def __str__(self):
         return f"{self.title}"
@@ -43,7 +57,7 @@ class Project(TitleSlugDescriptionModel, TimeStampedModel, models.Model):
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse("projects:detail", kwargs={"slug": self.slug})
+        return reverse("projects:log_list", kwargs={"slug": self.slug})
 
     @classmethod
     def get_default_pattern(cls, framework):
@@ -52,7 +66,7 @@ class Project(TitleSlugDescriptionModel, TimeStampedModel, models.Model):
         return defaults.get(framework.lower())
 
     def reset_pattern_to_default(self) -> str:
-        self.pattern = self.get_default_pattern(self.log_type)
+        self.pattern = self.get_default_pattern(self.framework)
 
         return self.pattern
 
