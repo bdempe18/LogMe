@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.decorators.http import require_http_methods
 from django.views.generic import DetailView
+from django.views.generic import ListView
 from django.views.generic.edit import CreateView
 
 from .models import LogEntry
@@ -16,16 +17,17 @@ class ProjectCreateView(CreateView):
     success_url = reverse_lazy("home")
 
 
-class ProjectDetailView(DetailView):
-    model = Project
-    template_name = "pages/projects/detail.html"
+class ProjectLogs(ListView):
+    model = LogEntry
+    template_name = "pages/projects/list.html"
+    context_object_name = "entries"
+    paginate_by = 25
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["entries"] = (
-            self.object.entries.all().prefetch_related("level").order_by("-timestamp")
-        )
-        return context
+    def get_queryset(self):
+        slug = self.kwargs["slug"]
+
+        project = Project.objects.get(slug=slug)
+        return LogEntry.objects.prefetch_related("level").filter(project=project)
 
 
 class LogDetailView(DetailView):

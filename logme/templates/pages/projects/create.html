@@ -2,9 +2,9 @@
 
 {% block content %}
   <div class="container">
-    <div class="mx-24 p-4 pt-12 rounded-lg dark:bg-slate-800">
+    <div class="mx-24 p-12 rounded-lg dark:bg-slate-800">
       <h2 class="text-center">Create New Project</h2>
-      <form method="post">
+      <form method="post" class="space-y-4">
         {% csrf_token %}
         {{ form.as_div }}
         <div class="flex justify-center">
