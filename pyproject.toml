@@ -186,6 +186,7 @@ django-extensions = "3.2.3"
 django-coverage-plugin = "3.1.0"
 pytest-django = "4.9.0"
 django-browser-reload = "^1.17.0"
+django-filter = "^24.3"
 
 [tool.poetry.group.dev.dependencies]
 django-extensions = "^3.2.3"

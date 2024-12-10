@@ -2,6 +2,15 @@
 
 {% block content %}
   <h1 class="text-center mb-4">{{ project.title }}</h1>
+  {# filters #}
+  <section>
+    <form action=""
+          method=""
+          class="flex flex-row justify-left flex-wrap space-x-2 py-2 pl-2">
+      {{ filterset.form.as_div }}
+      <button class="btn-primary" type="submit">Filter</button>
+    </form>
+  </section>
   {% for entry in entries %}
     <div id="accordion-collapse-{{ forloop.counter }}"
          data-accordion="collapse"

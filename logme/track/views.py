@@ -6,6 +6,7 @@ from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView
 
+from .filters import LogEntryFilter
 from .forms import ProjectForm
 from .models import LogEntry
 from .models import Project
@@ -23,12 +24,23 @@ class ProjectLogs(ListView):
     template_name = "projects/list.html"
     context_object_name = "entries"
     paginate_by = 25
+    filterset_class = LogEntryFilter
 
     def get_queryset(self):
         slug = self.kwargs["slug"]
 
         project = Project.objects.get(slug=slug)
-        return LogEntry.objects.prefetch_related("level").filter(project=project)
+        queryset = LogEntry.objects.prefetch_related("level").filter(project=project)
+
+        self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
+
+        return self.filterset.qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["filterset"] = self.filterset
+
+        return context
 
 
 class LogDetailView(DetailView):
