@@ -99,6 +99,7 @@ class LogEntry(TimeStampedModel, models.Model):
     summary = models.TextField(blank=True)
     timestamp = models.DateTimeField()
     trace = models.TextField(blank=True)
+    is_read = models.BooleanField(default=False)
     level = models.ForeignKey(
         LogLevel,
         on_delete=models.CASCADE,

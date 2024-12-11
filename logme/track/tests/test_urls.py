@@ -27,7 +27,7 @@ class TestProjects:
         project = ProjectFactory()
 
         self.check_url(
-            client, "projects:log_list", views.ProjectLogs, slug=project.slug
+            client, "projects:log_list", views.log_entry_list(), slug=project.slug
         )
 
     def test_log_detail(self, client):
