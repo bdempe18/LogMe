@@ -7,6 +7,7 @@ from django_extensions.db.models import TitleSlugDescriptionModel
 
 from .fields import HexColorField
 from .managers import LogManager
+from .managers import ReadManager
 
 
 class LogLevel(models.Model):
@@ -112,6 +113,7 @@ class LogEntry(TimeStampedModel, models.Model):
     )
 
     objects = LogManager()
+    read = ReadManager()
 
     class Meta:
         ordering = ["-timestamp"]

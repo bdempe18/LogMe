@@ -48,6 +48,15 @@ class LogDetailView(DetailView):
         context["supressing_keywords"] = "/vendor/"
         return context
 
+    def get(self, request, *args, **kwargs):
+        log = self.get_object()
+
+        if not log.is_read:
+            log.is_read = True
+            log.save()
+
+        return super().get(request, *args, **kwargs)
+
 
 @require_http_methods(["DELETE"])
 def log_entry_delete(request, pk):

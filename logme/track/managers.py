@@ -21,3 +21,8 @@ class LogManager(models.Manager):
             delete_count += n
 
         return delete_count
+
+
+class ReadManager(models.Manager):
+    def unread(self):
+        return self.filter(is_read=False)
