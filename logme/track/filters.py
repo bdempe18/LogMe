@@ -17,7 +17,7 @@ class LogEntryFilter(df.FilterSet):
 
     level = df.ModelMultipleChoiceFilter(
         queryset=LogLevel.objects.distinct(),
-        widget=forms.SelectMultiple(),
+        widget=forms.CheckboxSelectMultiple(),
         label="Log Level",
     )
 

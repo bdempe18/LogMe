@@ -1,9 +1,10 @@
+from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.decorators.http import require_http_methods
 from django.views.generic import DetailView
-from django.views.generic import ListView
 from django.views.generic.edit import CreateView
 
 from .filters import LogEntryFilter
@@ -19,28 +20,22 @@ class ProjectCreateView(CreateView):
     success_url = reverse_lazy("home")
 
 
-class ProjectLogs(ListView):
-    model = LogEntry
-    template_name = "projects/list.html"
-    context_object_name = "entries"
-    paginate_by = 25
-    filterset_class = LogEntryFilter
+def log_entry_list(request, slug):
+    project = Project.objects.get(slug=slug)
+    entries = project.entries.prefetch_related("level")
 
-    def get_queryset(self):
-        slug = self.kwargs["slug"]
+    filterset = LogEntryFilter(request.GET, queryset=entries)
 
-        project = Project.objects.get(slug=slug)
-        queryset = LogEntry.objects.prefetch_related("level").filter(project=project)
+    paginator = Paginator(filterset.qs, 25)
+    page_number = request.GET.get("page", 1)
+    page_obj = paginator.get_page(page_number)
 
-        self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
+    context = {"entries": page_obj, "project": project, "filterset": filterset}
 
-        return self.filterset.qs
+    if request.headers.get("HX-Request"):
+        return render(request, "projects/_log_list.html", context)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["filterset"] = self.filterset
-
-        return context
+    return render(request, "projects/list.html", context)
 
 
 class LogDetailView(DetailView):
