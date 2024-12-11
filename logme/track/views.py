@@ -46,6 +46,11 @@ class LogDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context["trace"] = self.object.trace.split("\n") if self.object.trace else []
         context["supressing_keywords"] = "/vendor/"
+        context["n_related"] = (
+            LogEntry.objects.filter(summary=self.object.summary)
+            .exclude(pk=self.object.pk)
+            .count()
+        )
         return context
 
     def get(self, request, *args, **kwargs):

@@ -36,6 +36,10 @@
 
 @layer utilities {
   [x-cloak] { display: none !important; }
+
+  .hide-vendor.vendor {
+      display: none;
+  }
 }
 
 @layer components {
