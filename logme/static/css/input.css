@@ -35,12 +35,23 @@
     }
 
     /* Inputs */
-    [type='text'],[type='email'],[type='url'],[type='password'],[type='number'],[type='date'],[type='datetime-local'],[type='month'],[type='search'],[type='tel'],[type='time'],[type='week'],[multiple],textarea,select {
-        @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary dark:focus:border-primary
+    input:is([type='text'],[type='email'],[type='url'],[type='password'],[type='number'],[type='date'],[type='datetime-local'],[type='month'],[type='search'],[type='tel'],[type='time'],[type='week']),
+    form select,
+    form select[multiple],
+    form textarea {
+        @apply bg-slate-500 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-slate-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-secondary dark:focus:border-secondary;
     }
 
     form label {
-        @apply block mb-2 text-sm font-medium text-gray-900 dark:text-white
+        @apply block mb-2 text-sm font-medium text-gray-900 dark:text-white;
+    }
+
+    button {
+        @apply hover:cursor-pointer;
+    }
+
+    button[aria-expanded="true"] {
+        background-color: transparent !important;
     }
 }
 

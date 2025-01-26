@@ -17,7 +17,7 @@ class LogLevel(models.Model):
     color_hex = HexColorField(default="COCOCO")
 
     def __str__(self):
-        return f"{self.title}"
+        return f"{self.title}".title()
 
 
 class Project(TitleSlugDescriptionModel, TimeStampedModel, models.Model):
@@ -41,6 +41,7 @@ class Project(TitleSlugDescriptionModel, TimeStampedModel, models.Model):
     # regex patterns to read the first line
     pattern = models.CharField(
         max_length=255,
+        blank=True,
         help_text="""
             Regex pattern needed to parse the first line of a log into the date,
             level, summary, and initial trace. The framework default will be

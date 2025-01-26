@@ -54,7 +54,7 @@
         hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     {% include 'components/_nav.html' %}
     {% block body %}
-      <div class="container mt-24"
+      <div class="container w-screen mt-24"
            x-data="{ showQuickFlash: false, quickFlashText: '' }">
         {% if messages %}
           {% for message in messages %}
