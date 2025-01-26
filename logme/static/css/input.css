@@ -2,6 +2,13 @@
 
 @config "./../tailwind.config.js";
 
+@theme {
+    --color-primary: #2B7FFF;
+    --color-secondary: #DFBBB1;
+    --color-accent: #6B4E71;
+    --color-background: #111827;
+}
+
 @layer base {
     body {
         @apply bg-gray-50 dark:bg-gray-900;
@@ -15,17 +22,21 @@
         @apply text-3xl font-bold dark:text-white;
     }
 
+    h3 {
+        @apply text-2xl font-bold dark:text-white;
+    }
+
     p {
         @apply text-lg dark:text-white;
     }
 
     a {
-        @apply text-blue-500 hover:text-blue-700;
+        @apply text-primary hover:text-blue-700;
     }
 
     /* Inputs */
     [type='text'],[type='email'],[type='url'],[type='password'],[type='number'],[type='date'],[type='datetime-local'],[type='month'],[type='search'],[type='tel'],[type='time'],[type='week'],[multiple],textarea,select {
-        @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
+        @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary dark:focus:border-primary
     }
 
     form label {
@@ -43,7 +54,7 @@
 
 @layer components {
     .btn-primary {
-        @apply text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800
+        @apply text-white hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-primary dark:text-blue-200 dark:hover:text-white dark:hover:bg-primary dark:focus:ring-blue-800
     }
 
     .btn-action {
@@ -62,5 +73,4 @@
 
         @apply size-4 mr-1;
     }
-
 }

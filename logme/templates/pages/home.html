@@ -94,11 +94,15 @@
     </div>
   {% else %}
     <div class="flex flex-col items-center justify-center gap-2 h-[calc(100vh-10em)] w-screen">
-      <p>No projects found</p>
-      <p>Click below to create your first project</p>
-      <a href="{% url 'projects:create' %}"
-         type="button"
-         class="inline-block btn-primary">Create Project</a>
+      <div class="rounded-lg bg-linear-45 from-primary to-accent p-[2px]">
+        <div class="bg-background p-4 space-y-2.5 rounded-lg flex flex-col items-center justify-center">
+          <h3>No projects found</h3>
+          <p>Click below to create your first project</p>
+          <a href="{% url 'projects:create' %}"
+             type="button"
+             class="inline-block btn-primary">Create Project</a>
+        </div>
+      </div>
     </div>
   {% endif %}
 {% endblock content %}
