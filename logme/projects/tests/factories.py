@@ -6,9 +6,9 @@ from factory import LazyAttribute
 from factory import SubFactory
 from factory.django import DjangoModelFactory
 
-from logme.track.models import LogEntry
-from logme.track.models import LogLevel
-from logme.track.models import Project
+from logme.projects.models import LogEntry
+from logme.projects.models import LogLevel
+from logme.projects.models import Project
 
 
 class ProjectFactory(DjangoModelFactory[Project]):

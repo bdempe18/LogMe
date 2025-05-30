@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="grid place-items-center w-screen">
+    <div class="w-1/3 rounded-lg bg-linear-45 from-primary to-accent p-[2px]">
+      <div class="p-4 rounded-lg dark:bg-background">
+        <h2 class="text-center">Create New Connection</h2>
+        <form method="post"
+              class="space-y-4"
+              x-data="{ authMethod: '{{ form.auth_method.initial }}' }">
+          {% csrf_token %}
+          <!-- Connection Details Section -->
+          <fieldset class="space-y-2">
+            <legend>General</legend>
+            {{ form.name.errors }}
+            {{ form.name.label_tag }}
+            {{ form.name }}
+          </fieldset>
+          <fieldset class="space-y-2">
+            <legend>Connection Details</legend>
+            <div class="flex gap-4">
+              <div class="w-2/3">
+                {{ form.host.errors }}
+                {{ form.host.label_tag }}
+                {{ form.host }}
+              </div>
+              <div class="w-1/3">
+                {{ form.port.errors }}
+                {{ form.port.label_tag }}
+                {{ form.port }}
+              </div>
+            </div>
+            {{ form.user.errors }}
+            {{ form.user.label_tag }}
+            {{ form.user }}
+          </fieldset>
+          <!-- Authentication Section -->
+          <fieldset class="space-y-2">
+            <legend>Authentication</legend>
+            {{ form.auth_method.errors }}
+            <ul class="grid w-full gap-6 md:grid-cols-2">
+              <li>
+                <input type="radio"
+                       id="auth-key"
+                       name="auth_method"
+                       value="key"
+                       class="hidden peer"
+                       x-model="authMethod"
+                       required />
+                <label for="auth-key"
+                       class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 dark:peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                  <div class="block">
+                    <div class="w-full text-lg font-semibold">SSH Key</div>
+                    <div class="w-full text-sm">Use an SSH key file for authentication</div>
+                  </div>
+                </label>
+              </li>
+              <li>
+                <input type="radio"
+                       id="auth-password"
+                       name="auth_method"
+                       value="password"
+                       class="hidden peer"
+                       x-model="authMethod" />
+                <label for="auth-password"
+                       class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 dark:peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                  <div class="block">
+                    <div class="w-full text-lg font-semibold">Password</div>
+                    <div class="w-full text-sm">Use a password for authentication</div>
+                  </div>
+                </label>
+              </li>
+            </ul>
+            <div x-show="authMethod === 'key'" class="mt-4">
+              {{ form.identity_file.errors }}
+              {{ form.identity_file.label_tag }}
+              {{ form.identity_file }}
+              {% if form.identity_file.help_text %}
+                <p class="text-sm text-slate-400">{{ form.identity_file.help_text }}</p>
+              {% endif %}
+            </div>
+            <div x-show="authMethod === 'password'" class="mt-4">
+              {{ form.password.errors }}
+              {{ form.password.label_tag }}
+              {{ form.password }}
+              {% if form.password.help_text %}<p class="text-sm text-slate-400">{{ form.password.help_text }}</p>{% endif %}
+            </div>
+          </fieldset>
+          <div class="flex justify-end">
+            {% if readonly %}
+              <a role="button" class="btn-primary" href="{% url 'connections:list' %}">Back to List</a>
+            {% else %}
+              <button type="submit" class="btn-primary">{{ view.object.pk|yesno:"Update,Create" }} Connection</button>
+            {% endif %}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

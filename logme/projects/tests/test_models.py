@@ -1,13 +1,13 @@
 import pytest
 from django.utils.text import slugify
 
-from logme.track import models as track
+from logme.projects import models
 
 
 @pytest.mark.django_db
 class TestLogLevel:
     def test_str(self):
         title = "this is a test"
-        level = track.LogLevel(title=title, slug=slugify(title))
+        level = models.LogLevel(title=title, slug=slugify(title))
 
         assert str(level) == title

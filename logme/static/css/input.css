@@ -15,7 +15,7 @@
     }
 
     h1 {
-        @apply text-4xl font-bold dark:text-white;
+        @apply text-4xl font-bold dark:text-white italic;
     }
 
     h2 {
@@ -26,12 +26,20 @@
         @apply text-2xl font-bold dark:text-white;
     }
 
+    h4 {
+        @apply text-lg font-bold dark:text-white;
+    }
+
     p {
         @apply text-lg dark:text-white;
     }
 
     a {
-        @apply text-primary hover:text-blue-700;
+        @apply dark:text-primary hover:text-blue-700;
+    }
+
+    legend {
+        @apply dark:text-primary text-lg font-semibold;
     }
 
     /* Inputs */
@@ -39,7 +47,13 @@
     form select,
     form select[multiple],
     form textarea {
-        @apply bg-slate-500 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-slate-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-secondary dark:focus:border-secondary;
+        @apply bg-slate-500 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-slate-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-secondary dark:focus:border-secondary disabled:bg-slate-500 disabled:text-slate-700 disabled:font-semibold disabled:cursor-not-allowed;
+    }
+
+
+
+    input[type='file'] {
+        @apply block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-white;
     }
 
     form label {

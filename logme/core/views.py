@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from logme.track.models import Project
+from logme.projects.models import Project
 
 
 def home(request):

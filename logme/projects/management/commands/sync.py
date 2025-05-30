@@ -7,9 +7,9 @@ from django.core.management.base import CommandError
 from django.db.models import Q
 from django.utils import timezone
 
-from logme.track.models import LogEntry
-from logme.track.models import LogLevel
-from logme.track.models import Project
+from logme.projects.models import LogEntry
+from logme.projects.models import LogLevel
+from logme.projects.models import Project
 
 
 class Command(BaseCommand):

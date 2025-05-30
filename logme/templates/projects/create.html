@@ -21,6 +21,7 @@
                 </div>
               {% endwith %}
             {% endfor %}
+            <a href="{% url 'new_connection' %}" class="text-sm">New connection</a>
           </fieldset>
           <div id="accordion-collapse" data-accordion="collapse">
             <button type="button"
@@ -55,8 +56,8 @@
                 {% endfor %}
               </fieldset>
             </div>
-            <div class="flex justify-center">
-              <button type="submit" class="btn-primary my-2">Create Project</button>
+            <div class="flex justify-around my-2">
+              <button type="submit" class="btn-action">Create Project</button>
             </div>
           </div>
         </form>

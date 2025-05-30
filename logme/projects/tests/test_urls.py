@@ -4,8 +4,8 @@ import pytest
 from django.urls import resolve
 from django.urls import reverse
 
-from logme.track import views
-from logme.track.models import LogEntry
+from logme.projects import views
+from logme.projects.models import LogEntry
 
 from .factories import LogEntryFactory
 from .factories import ProjectFactory

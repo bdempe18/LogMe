@@ -5,6 +5,8 @@ from django_extensions.db.fields import AutoSlugField
 from django_extensions.db.models import TimeStampedModel
 from django_extensions.db.models import TitleSlugDescriptionModel
 
+from logme.connections.models import Connection
+
 from .fields import HexColorField
 from .managers import LogManager
 from .managers import ReadManager
@@ -25,18 +27,16 @@ class Project(TitleSlugDescriptionModel, TimeStampedModel, models.Model):
         ("LARAVEL", "Laravel"),
     ]
 
+    tags = [("prod", "Production"), ("dev", "Staging"), ("local", "Local")]
+
     # Fields
     last_synced_at = models.DateTimeField(null=True)
     framework = models.CharField(choices=log_choices, default=log_choices[0])
-    sync_command = models.TextField(
-        blank=True,
-        help_text="""
-            Command to copy log file from its home location to this project.
-            Use `{here}` for the destination. The `cp` command is a good
-            choice for local projects and `scp` for remote projects.,
-        """,
+    connection = models.ForeignKey(
+        Connection, on_delete=models.CASCADE, null=True, blank=True
     )
     levels = models.ManyToManyField(LogLevel, related_name="projects")
+    file_path = models.CharField(max_length=255)
 
     # regex patterns to read the first line
     pattern = models.CharField(

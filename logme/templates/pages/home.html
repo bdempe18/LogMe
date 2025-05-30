@@ -3,7 +3,7 @@
 {% block content %}
   <div class="container">
     {% if projects %}
-      <div class="flex flex-wrap justify-center gap-4">
+      <div class="flex flex-wrap gap-4 px-16">
         {% for project in projects %}
           <div class="relative max-w-2xl px-24 py-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 group"
                x-data="{ showCommand: false, textToCopy: '{{ project.management_command }}' }">
