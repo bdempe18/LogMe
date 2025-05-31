@@ -18,14 +18,14 @@ class ConnectionCreateView(CreateView):
     model = Connection
     form_class = ConnectionForm
     template_name = "connections/form.html"
-    success_url = reverse_lazy("connection:list")
+    success_url = reverse_lazy("connections:list")
 
 
 class ConnectionUpdateView(UpdateView):
     model = Connection
     form_class = ConnectionForm
     template_name = "connections/form.html"
-    success_url = reverse_lazy("connection:list")
+    success_url = reverse_lazy("connections:list")
 
 
 class ConnectionDetailView(DetailView):

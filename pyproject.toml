@@ -25,7 +25,6 @@ dependencies = [
     "mypy==1.13.0",
     "django-stubs[compatible-mypy]==5.1.1",
     "django-filter<25.0,>=24.3",
-    "django-template-partials>=24.4",
 ]
 name = "logme"
 version = "0.1.0"

@@ -1,11 +1,21 @@
 {% extends "base.html" %}
 
-{% load partials %}
-
 {% block content %}
   <div class="container">
-    <h1 class="text-center mb-4">Connections</h1>
-    {% include 'components/_grid.html' %}
-    {% partial grid items=connections %}
+    <div class="grid grid-cols-3 items-center mb-4">
+      <h1 class="col-start-2">Connections</h1>
+      <div class="text-right">
+        <a href="{% url 'connections:create' %}" class="inline-flex btn-action">Create Connection</a>
+      </div>
+    </div>
+    {% if connections %}
+      {% include "components/grid_card.html" with items=connections %}
+    {% else %}
+      <div class="text-center py-8">
+        <p class="text-gray-600 dark:text-gray-400">No connections found.</p>
+        <a href="{% url 'connections:create' %}"
+           class="inline-flex btn-primary mt-4">Create Connection</a>
+      </div>
+    {% endif %}
   </div>
 {% endblock content %}

@@ -85,7 +85,6 @@ THIRD_PARTY_APPS = [
     "allauth.mfa",
     "allauth.socialaccount",
     "django_filters",
-    "template_partials",
 ]
 
 LOCAL_APPS = [
