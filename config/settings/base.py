@@ -85,6 +85,7 @@ THIRD_PARTY_APPS = [
     "allauth.mfa",
     "allauth.socialaccount",
     "django_filters",
+    "template_partials",
 ]
 
 LOCAL_APPS = [
@@ -100,7 +101,11 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 # MIGRATIONS
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#migration-modules
-MIGRATION_MODULES = {"sites": "logme.contrib.sites.migrations"}
+MIGRATION_MODULES = {
+    "sites": "logme.contrib.sites.migrations",
+    "connections": "logme.connections.migrations",
+    "projects": "logme.projects.migrations",
+}
 
 # AUTHENTICATION
 # ------------------------------------------------------------------------------
