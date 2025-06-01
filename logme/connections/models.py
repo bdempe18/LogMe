@@ -5,6 +5,7 @@ from django.db import models
 from django.urls import reverse
 
 LOCAL_PATH = "{here}"
+CONNECTION_TIMEOUT = 10
 
 
 class AuthMethod(enum.Enum):
@@ -51,11 +52,34 @@ class Connection(models.Model):
     def get_edit_url(self):
         return reverse("connections:edit", kwargs={"pk": self.pk})
 
+    def build_ssh_command(self):
+        command = ["ssh"]
+        command.extend(["-o", f"ConnectTimeout={CONNECTION_TIMEOUT}"])
+
+        if self.auth_method == AuthMethod.IDENTITY_FILE and self.identity_file:
+            command.extend(["-i", self.identity_file])
+        elif self.auth_method == AuthMethod.PASSWORD and self.password:
+            command = ["sshpass", "-p", self.password, *command]
+
+        # Add user and host
+        command.extend(["-p", str(self.port)])
+        command.append(self.as_str_without_port)
+
+        return command
+
     @property
     def auth_method(self) -> AuthMethod:
         if self.identity_file:
             return AuthMethod.IDENTITY_FILE
         return AuthMethod.PASSWORD
+
+    @property
+    def as_str_without_port(self) -> str:
+        return f"{self.user}@{self.host}"
+
+    @property
+    def as_str(self) -> str:
+        return f"{self.as_str_without_port}:{self.port}"
 
     def clean(self):
         if not self.identity_file and not self.password:
@@ -65,6 +89,3 @@ class Connection(models.Model):
         if self.identity_file and self.password:
             err = "Cannot provide both password and identity file"
             raise ValidationError(err)
-
-    def connection_string(self) -> str:
-        return f"{self.user}@{self.host}:{self.port}"
