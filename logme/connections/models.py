@@ -3,6 +3,7 @@ import enum
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
+from django_extensions.db.fields import AutoSlugField
 
 LOCAL_PATH = "{here}"
 CONNECTION_TIMEOUT = 10
@@ -17,6 +18,8 @@ class AuthMethod(enum.Enum):
 # but im using null to signal which auth method is being used
 class Connection(models.Model):
     name = models.CharField(max_length=255)
+    slug = AutoSlugField(populate_from=["name"])
+
     identity_file = models.FilePathField(  # noqa: DJ001
         path="/",
         match=r".*\.pem$",
@@ -47,10 +50,10 @@ class Connection(models.Model):
         return f"{self.name}"
 
     def get_absolute_url(self):
-        return reverse("connections:detail", kwargs={"pk": self.pk})
+        return reverse("connections:detail", kwargs={"slug": self.slug})
 
     def get_edit_url(self):
-        return reverse("connections:edit", kwargs={"pk": self.pk})
+        return reverse("connections:edit", kwargs={"slug": self.slug})
 
     def build_ssh_command(self):
         command = ["ssh"]

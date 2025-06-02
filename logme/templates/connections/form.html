@@ -12,7 +12,7 @@
           {% endif %}
         </h2>
         {% if object.pk %}
-          <a href="{% url 'connections:edit' object.pk %}"
+          <a href="{% url 'connections:edit' object.slug %}"
              class="absolute right-2 top-2">{% include "svgs/edit.html" %}</a>
         {% endif %}
         <div class="mt-4">

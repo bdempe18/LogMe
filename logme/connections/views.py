@@ -40,6 +40,8 @@ class ConnectionDetailView(DetailView):
     form_class = ConnectionForm
 
     def get_context_data(self, **kwargs):
+        # TODO clean up with process. we can probably depend on the object pk
+        # existence
         context = super().get_context_data(**kwargs)
         form = self.form_class(instance=self.object)
         # Disable all form fields
@@ -60,7 +62,7 @@ def test_connection(request):
         return HttpResponse(
             render_to_string(
                 "components/notification.html",
-                {"is_sucess": False, "message": "Connection not found"},
+                {"is_success": False, "message": "Connection not found"},
             )
         )
 
