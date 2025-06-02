@@ -1,6 +1,4 @@
-import subprocess
 from dataclasses import asdict
-from dataclasses import dataclass
 
 from django.http import HttpResponse
 from django.template.loader import render_to_string
@@ -13,6 +11,7 @@ from django.views.generic import UpdateView
 
 from .forms import ConnectionForm
 from .models import Connection
+from .utilities import ssh_connect
 
 
 class ConnectionListView(ListView):
@@ -61,48 +60,14 @@ def test_connection(request):
         return HttpResponse(
             render_to_string(
                 "components/notification.html",
-                asdict(ConnectionTestResult.error("Connection not found")),
+                {"is_sucess": False, "message": "Connection not found"},
             )
         )
 
-    try:
-        command = conn.build_ssh_command()
-        command.append('echo "Connection successful"')
+    command = conn.build_ssh_command()
+    command.append('echo "Connection successful"')
 
-        result = subprocess.run(  # noqa: S603
-            command, capture_output=True, text=True, timeout=15, check=False
-        )
+    response = ssh_connect(command)
 
-        if result.returncode == 0:
-            context = ConnectionTestResult.success(result.stdout)
-        else:
-            context = ConnectionTestResult.error(result.stderr)
-
-    except subprocess.TimeoutExpired:
-        context = ConnectionTestResult.error("Connection timed out after 15 seconds")
-    except Exception as e:  # noqa: BLE001
-        context = ConnectionTestResult.error(f"Unexpected error: {e!s}")
-
-    html = render_to_string("components/notification.html", asdict(context))
+    html = render_to_string("components/notification.html", asdict(response))
     return HttpResponse(html)
-
-
-# ---- helpers ----
-@dataclass
-class ConnectionTestResult:
-    message: str
-    success: bool
-
-    @classmethod
-    def success(cls, message: str = "Connection successful") -> "ConnectionTestResult":
-        return cls(
-            success=True,
-            message=message,
-        )
-
-    @classmethod
-    def error(cls, message: str = "Connection failed") -> "ConnectionTestResult":
-        return cls(
-            success=False,
-            message=message,
-        )
