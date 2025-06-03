@@ -17,7 +17,7 @@ class AuthMethod(enum.Enum):
 # blank=True is not usually a good practice for charfields and other db fields,
 # but im using null to signal which auth method is being used
 class Connection(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     slug = AutoSlugField(populate_from=["name"])
 
     identity_file = models.FilePathField(  # noqa: DJ001
@@ -25,7 +25,7 @@ class Connection(models.Model):
         match=r".*\.pem$",
         recursive=True,
         max_length=255,
-        blank=False,
+        blank=True,
         null=True,
     )
 
@@ -35,7 +35,7 @@ class Connection(models.Model):
             Password for authentication.
             Required if no identity file is provided.
         """,
-        blank=False,
+        blank=True,
         null=True,
     )
 
@@ -48,6 +48,10 @@ class Connection(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse("connections:detail", kwargs={"slug": self.slug})
