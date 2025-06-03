@@ -3,7 +3,6 @@ from django.contrib.contenttypes.models import ContentType
 
 from logme.connections.models import Connection
 
-from .models import LogLevel
 from .models import Project
 
 
@@ -18,7 +17,7 @@ class ProjectForm(forms.ModelForm):
 
     class Meta:
         model = Project
-        fields = ["title", "framework", "description", "levels", "pattern", "file_path"]
+        fields = ["title", "framework", "description", "pattern", "file_path"]
 
         widgets = {
             "title": placeholder("My Project"),
@@ -33,12 +32,11 @@ class ProjectForm(forms.ModelForm):
 
     fieldsets = {
         "basic": ("title", "framework", "file_path", "connection"),
-        "advanced": ("description", "levels", "pattern"),
+        "advanced": ("description", "pattern"),
     }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["levels"].initial = [lev.pk for lev in LogLevel.objects.all()]
 
         # Set initial connection if instance exists
         if self.instance and self.instance.pk and self.instance.connection:

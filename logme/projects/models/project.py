@@ -1,25 +1,13 @@
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
-from django_extensions.db.fields import AutoSlugField
 from django_extensions.db.models import TimeStampedModel
 from django_extensions.db.models import TitleSlugDescriptionModel
 
 from logme.connections.models import Connection
 
-from .fields import HexColorField
 from .managers import LogManager
 from .managers import ReadManager
-
-
-class LogLevel(models.Model):
-    # Fields
-    title = models.CharField(max_length=50)
-    slug = AutoSlugField(populate_from=["title"])
-    color_hex = HexColorField(default="COCOCO")
-
-    def __str__(self):
-        return f"{self.title}".title()
 
 
 class Project(TitleSlugDescriptionModel, TimeStampedModel, models.Model):
@@ -35,7 +23,6 @@ class Project(TitleSlugDescriptionModel, TimeStampedModel, models.Model):
     connection = models.ForeignKey(
         Connection, on_delete=models.CASCADE, null=True, blank=True
     )
-    levels = models.ManyToManyField(LogLevel, related_name="projects")
     file_path = models.CharField(max_length=255)
 
     # regex patterns to read the first line
@@ -100,13 +87,10 @@ class LogEntry(TimeStampedModel, models.Model):
     title = models.CharField(max_length=100, blank=True, default="")
     summary = models.TextField(blank=True)
     timestamp = models.DateTimeField()
+
+    level = models.CharField(max_length=50)
     trace = models.TextField(blank=True)
     is_read = models.BooleanField(default=False)
-    level = models.ForeignKey(
-        LogLevel,
-        on_delete=models.CASCADE,
-        related_name="entries",
-    )
     project = models.ForeignKey(
         Project,
         on_delete=models.CASCADE,
